@@ -69,6 +69,17 @@ Navigate to each route above and capture full-page screenshots. Recommended orde
 2. Upload → My Files → Share File
 3. Shared With Me → File Verification
 
+<img width="1897" height="976" alt="Screenshot 2026-06-24 113531" src="https://github.com/user-attachments/assets/87d37e37-ea0e-4cba-86ef-da949685ab9c" />
+<img width="1920" height="1080" alt="Screenshot (138)" src="https://github.com/user-attachments/assets/8f98aa34-bf41-4e7a-b810-6124d823dbbc" />
+<img width="1920" height="1080" alt="Screenshot (136)" src="https://github.com/user-attachments/assets/af6b3ef1-dca8-4179-af62-dd90de1e11f7" />
+<img width="1920" height="1080" alt="Screenshot (135)" src="https://github.com/user-attachments/assets/c69b937f-9873-41ab-b32b-bc821dc69c31" />
+<img width="1920" height="1080" alt="Screenshot (134)" src="https://github.com/user-attachments/assets/c1acc04f-2df1-48cd-b30f-91248130a4b6" />
+<img width="1920" height="1080" alt="Screenshot (133)" src="https://github.com/user-attachments/assets/47e69c0c-7938-4e2b-8a4e-d1b0cc6b6152" />
+<img width="1920" height="1080" alt="Screenshot (132)" src="https://github.com/user-attachments/assets/eb9f651a-1f4f-4aec-9ea0-8eb54906715e" />
+<img width="1920" height="1080" alt="Screenshot (139)" src="https://github.com/user-attachments/assets/68d08eb1-b15f-4acc-9e49-d5f1ea45b709" />
+
+
+
 ---
 
 **SecureShare** – Final Year Engineering Project UI
