@@ -1,9 +1,35 @@
-import { Link } from 'react-router-dom';
-import { User, Mail, Lock, UserPlus } from 'lucide-react';
+import { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { User, Mail, Lock, UserPlus, AlertCircle } from 'lucide-react';
 import ShieldIllustration from '../components/illustrations/ShieldIllustration';
 import Logo from '../components/Logo';
+import { AuthContext } from '../context/AuthContext';
 
 export default function RegisterPage() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { register } = useContext(AuthContext);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    
+    if (password !== confirmPassword) {
+      return setError("Passwords don't match");
+    }
+
+    setLoading(true);
+    const result = await register(name, email, password);
+    if (!result.success) {
+      setError(result.error);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-main flex">
       {/* Left Panel */}
@@ -34,12 +60,26 @@ export default function RegisterPage() {
               <p className="text-gray-500 text-sm mt-1">Start sharing files securely today</p>
             </div>
 
-            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg flex items-center text-sm">
+                <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0" />
+                {error}
+              </div>
+            )}
+
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input type="text" placeholder="Enter your full name" className="input-field pl-11" defaultValue="Amit Shelke" />
+                  <input 
+                    type="text" 
+                    placeholder="Enter your full name" 
+                    className="input-field pl-11" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
                 </div>
               </div>
 
@@ -47,7 +87,14 @@ export default function RegisterPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input type="email" placeholder="Enter your email" className="input-field pl-11" defaultValue="amit.shelke@email.com" />
+                  <input 
+                    type="email" 
+                    placeholder="Enter your email" 
+                    className="input-field pl-11" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
                 </div>
               </div>
 
@@ -55,7 +102,14 @@ export default function RegisterPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input type="password" placeholder="Create a password" className="input-field pl-11" defaultValue="••••••••" />
+                  <input 
+                    type="password" 
+                    placeholder="Create a password" 
+                    className="input-field pl-11" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
                 </div>
               </div>
 
@@ -63,13 +117,24 @@ export default function RegisterPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Confirm Password</label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input type="password" placeholder="Confirm your password" className="input-field pl-11" defaultValue="••••••••" />
+                  <input 
+                    type="password" 
+                    placeholder="Confirm your password" 
+                    className="input-field pl-11" 
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                  />
                 </div>
               </div>
 
-              <Link to="/dashboard" className="btn-primary w-full text-center block">
-                Register
-              </Link>
+              <button 
+                type="submit" 
+                className="btn-primary w-full text-center block"
+                disabled={loading}
+              >
+                {loading ? 'Creating account...' : 'Register'}
+              </button>
             </form>
 
             <p className="text-center text-sm text-gray-500 mt-6">

@@ -8,25 +8,32 @@ import {
   LogOut,
   Menu,
   X,
+  Users as UsersIcon,
+  ShieldCheck,
+  Activity
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Logo from './Logo';
-import { currentUser } from '../data/mockData';
+import { AuthContext } from '../context/AuthContext';
 
-const navItems = [
-  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { to: '/my-files', label: 'My Files', icon: FolderOpen },
-  { to: '/shared-with-me', label: 'Shared With Me', icon: Share2 },
-  { to: '/shared-by-me', label: 'Shared By Me', icon: Users },
-  { to: '/profile', label: 'Profile', icon: User },
+const menuItems = [
+  { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+  { icon: UsersIcon, label: 'Users Directory', path: '/users' },
+  { icon: FolderOpen, label: 'My Files', path: '/my-files' },
+  { icon: Share2, label: 'Shared With Me', path: '/shared-with-me' },
+  { icon: Users, label: 'Shared By Me', path: '/shared-by-me' },
+  { icon: ShieldCheck, label: 'Verify File', path: '/verify' },
+  { icon: Activity, label: 'Audit Trail', path: '/audit' },
+  { icon: User, label: 'Profile', path: '/profile' },
 ];
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
-    navigate('/login');
+    logout();
   };
 
   const sidebarContent = (
@@ -36,18 +43,20 @@ export default function Sidebar() {
       </div>
 
       <div className="p-4 flex-1">
-        <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 mb-6">
-          <div className="w-10 h-10 rounded-full bg-gradient-purple flex items-center justify-center text-white text-sm font-bold">
-            {currentUser.avatar}
+        {user && (
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 mb-6">
+            <div className="w-10 h-10 rounded-full bg-gradient-purple flex items-center justify-center text-white text-sm font-bold">
+              {user.avatar}
+            </div>
+            <div className="min-w-0">
+              <p className="text-white text-sm font-semibold truncate">{user.name}</p>
+              <p className="text-white/50 text-xs truncate">{user.email}</p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <p className="text-white text-sm font-semibold truncate">{currentUser.name}</p>
-            <p className="text-white/50 text-xs truncate">{currentUser.email}</p>
-          </div>
-        </div>
+        )}
 
         <nav className="space-y-1">
-          {navItems.map(({ to, label, icon: Icon }) => (
+          {menuItems.map(({ path: to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}

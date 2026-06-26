@@ -1,9 +1,28 @@
-import { Link } from 'react-router-dom';
-import { Mail, Lock, LogIn } from 'lucide-react';
+import { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Mail, Lock, LogIn, AlertCircle } from 'lucide-react';
 import ShieldIllustration from '../components/illustrations/ShieldIllustration';
 import Logo from '../components/Logo';
+import { AuthContext } from '../context/AuthContext';
 
 export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { login } = useContext(AuthContext);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    const result = await login(email, password);
+    if (!result.success) {
+      setError(result.error);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-main flex">
       {/* Left Panel */}
@@ -34,12 +53,26 @@ export default function LoginPage() {
               <p className="text-gray-500 text-sm mt-1">Sign in to your SecureShare account</p>
             </div>
 
-            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg flex items-center text-sm">
+                <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0" />
+                {error}
+              </div>
+            )}
+
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input type="email" placeholder="Enter your email" className="input-field pl-11" defaultValue="amit.shelke@email.com" />
+                  <input 
+                    type="email" 
+                    placeholder="Enter your email" 
+                    className="input-field pl-11" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required 
+                  />
                 </div>
               </div>
 
@@ -47,7 +80,14 @@ export default function LoginPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input type="password" placeholder="Enter your password" className="input-field pl-11" defaultValue="••••••••" />
+                  <input 
+                    type="password" 
+                    placeholder="Enter your password" 
+                    className="input-field pl-11" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required 
+                  />
                 </div>
               </div>
 
@@ -57,9 +97,13 @@ export default function LoginPage() {
                 </a>
               </div>
 
-              <Link to="/dashboard" className="btn-primary w-full text-center block">
-                Login
-              </Link>
+              <button 
+                type="submit" 
+                className="btn-primary w-full text-center block"
+                disabled={loading}
+              >
+                {loading ? 'Logging in...' : 'Login'}
+              </button>
             </form>
 
             <p className="text-center text-sm text-gray-500 mt-6">
